@@ -2,13 +2,12 @@ import numpy as np
 import cv2
 import random
 import copy
-import data_augment
+import data_augment_v2 as data_augment
 import roi_helpers
 import threading
 import itertools
 
 # random.seed(0)
-
 
 def get_img_output_length(width, height):
 	def get_output_length(input_length):

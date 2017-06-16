@@ -2,7 +2,8 @@ import numpy as np
 import cv2
 import random
 import copy
-import data_augment_v2 as data_augment
+import data_augment_simple
+import data_augment_advanced
 import roi_helpers
 import threading
 import itertools
@@ -307,9 +308,15 @@ def get_anchor_gt(all_img_data, class_count, C, backend, mode='train'):
 				# read in image, and optionally add augmentation
 
 				if mode == 'train':
-					img_data_aug, x_img = data_augment.augment(img_data, C, augment=True)
+					# which augmentation to use
+					if C.augmenter == "advanced":
+						img_data_aug, x_img = data_augment_advanced.augment(img_data, augment=True)
+					elif C.augmenter == "simple":
+						img_data_aug, x_img = data_augment_simple.augment(img_data, C, augment=True)
+					else:
+						img_data_aug, x_img = data_augment_simple.augment(img_data, C, augment=False)
 				else:
-					img_data_aug, x_img = data_augment.augment(img_data, C, augment=False)
+					img_data_aug, x_img = data_augment_simple.augment(img_data, C, augment=False)
 
 				(width, height) = (img_data_aug['width'], img_data_aug['height'])
 				(rows, cols, _) = x_img.shape

@@ -25,6 +25,7 @@ parser.add_option("-o", "--parser", dest="parser", help="Parser to use. One of s
 				default="pascal_voc"),
 parser.add_option("-n", "--num_rois", dest="num_rois",
 				help="Number of ROIs per iteration. Higher means more memory use.", default=32)
+parser.add_option("--a", "--augmenter", dest="augmenter", help="Augmenter to use. One of none, simple or advanced. (Default=none).", default="none"),
 parser.add_option("--hf", dest="horizontal_flips", help="Augment with horizontal flips in training. (Default=true).", action="store_true", default=False)
 parser.add_option("--vf", dest="vertical_flips", help="Augment with vertical flips in training. (Default=false).", action="store_true", default=False)
 parser.add_option("--rot", "--rot_90", dest="rot_90", help="Augment with 90 degree rotations in training. (Default=false).",
@@ -52,6 +53,7 @@ else:
 C = config.Config()
 
 C.num_rois = int(options.num_rois)
+C.augmenter = options.augmenter
 C.use_horizontal_flips = bool(options.horizontal_flips)
 C.use_vertical_flips = bool(options.vertical_flips)
 C.rot_90 = bool(options.rot_90)
@@ -94,6 +96,9 @@ print('Num val samples {}'.format(len(val_imgs)))
 
 data_gen_train = data_generators.get_anchor_gt(train_imgs, classes_count, C, K.image_dim_ordering(), mode='train')
 data_gen_val = data_generators.get_anchor_gt(val_imgs, classes_count, C, K.image_dim_ordering(), mode='val')
+
+if C.augmenter != 'advanced' and C.augmenter != 'simple':
+	print("Not using data augmentation with train images. (option={}).".format(C.augmenter))
 
 if K.image_dim_ordering() == 'th':
 	input_shape_img = (3, None, None)

@@ -11,13 +11,12 @@ from imgaug.imgaug import augmenters as iaa
 # show augmented images and bboxes
 # useful for testing different parameters below
 def get_show_parameters():
-    SHOW_BBOXES = True
-    SHOW_AUGMENTED_IMAGE_SAMPLES = True
+    SHOW_BBOXES = False
+    SHOW_AUGMENTED_IMAGE_SAMPLES = False
     return SHOW_BBOXES, SHOW_AUGMENTED_IMAGE_SAMPLES
 
 # tune this parameters to get different augmentation results
 # more details here: https://github.com/aleju/imgaug
-# credits mostly to https://github.com/aleju for the amazing library
 def get_augment_parameters():
     # Sometimes(0.5, ...) applies the given augmenter in 50% of all cases,
     # e.g. Sometimes(0.5, GaussianBlur(0.3)) would blur roughly every second image.
